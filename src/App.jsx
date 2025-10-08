@@ -9,7 +9,6 @@ export default function App() {
   const [topic, setTopic] = useState("");
   const [genre, setGenre] = useState("");
   const [mood, setMood] = useState("");
-  const [providersInput, setProvidersInput] = useState("");
   const [log, setLog] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +24,7 @@ export default function App() {
     if (tab === "chat") {
       if (!q && !file) return;
       body.append("q", q);
+      if (file) body.append("file", file);
       requestQ = q;
     } else if (tab === "image") {
       if (!file) return;
@@ -36,8 +36,6 @@ export default function App() {
       requestQ = `Generate ${genre || "any"} lyrics about "${topic}" with mood "${mood || "any"}"`;
       body.append("q", requestQ);
     }
-
-    if (providersInput) body.append("providers", providersInput);
 
     setLoading(true);
     try {
@@ -155,14 +153,6 @@ export default function App() {
             />
           </>
         )}
-
-        <input
-          type="text"
-          placeholder="Providers (comma separated)"
-          value={providersInput}
-          onChange={(e) => setProvidersInput(e.target.value)}
-          className="border p-2 rounded"
-        />
 
         <button
           onClick={send}
